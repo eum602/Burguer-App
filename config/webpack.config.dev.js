@@ -278,7 +278,7 @@ module.exports = {
             exclude: cssModuleRegex,
             use: getStyleLoaders({
               importLoaders: 1,
-              modules:true,
+              modules:true,//made configuration to enable css modules
               localIdentName:'[name]__[local]__[hash:base64:5]'
             }),
           },
