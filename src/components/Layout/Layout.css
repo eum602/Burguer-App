@@ -1,4 +1,41 @@
 .Content {
-    margin-top: 72px
+    margin-top: 72px /*margin top is with respect to its parent container*/
+}
 
+
+.Parent * {
+    margin: 0;
+    padding: 0
+}
+
+.Parent{
+    font-size: 150%;
+    background-color: beige;
+    height: 100vh;
+    margin: 0;
+    padding: 0
+}
+
+
+.Son{
+    float: left; /*1. positioning an object with float; it always put an object to the left. If the 
+    element is the first then it is put on the left hand side
+    2. For next elements it locates elements adjacent to other childs*/
+    margin-top: 5vh;
+    height: 10vh;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: azure
+}
+
+.Son3{
+    float: left;
+    margin-top: 5vh;
+    height: 80vh;
+    padding:  0;
+    width: 100%;
+    text-align: center; 
+    background-color: green
 }
