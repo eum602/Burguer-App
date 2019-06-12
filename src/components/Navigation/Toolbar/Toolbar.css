@@ -1,0 +1,20 @@
+.Toolbar {
+    height: 56px;
+    width: 100%;
+    position: fixed;/*always at the top  even if we scroll*/
+    top:0;
+    left:0;
+    background-color: #703B09;
+    display: flex;/*all the items in the toolbar are aligned next to each other,
+                    even if the are block elements*/
+    justify-content: space-between;/*property of flexbox, indicates how the elements
+    that are wrapped by the toolbar should be spread out */
+    align-items: center;
+    padding: 0 20px;/*0 for top and bottom but 20px for left and right*/
+    box-sizing: border-box;/*to make sure that the toolbar is sized correctly even with the padding*/
+    z-index: 90;
+}
+
+.Toolbar nav{
+    height: 100%;
+}
