@@ -47,7 +47,7 @@ class BurgerIngredient extends Component{
     
 }
 
-BurgerIngredient.propTypes = {
+BurgerIngredient.propTypes = {//validation using prop-Types npm package - l107 and l154
     type:propTypes.string.isRequired
 }
 export default BurgerIngredient
