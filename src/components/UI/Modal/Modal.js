@@ -3,7 +3,8 @@ import React from 'react'
 import Backdrop from '../Backdrop/Backdrop';
 import Aux from '../../../hoc/Aux';
 
-const modal =  props => (
+const modal =  props => (//modal UI translates the wrapped components so those are 
+    //displayed from top to bottom when props.show is true
     <Aux>
         <Backdrop show={props.show} clicked={props.modalClosed}/>
         <div 
