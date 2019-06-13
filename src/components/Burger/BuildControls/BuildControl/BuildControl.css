@@ -1,18 +1,18 @@
 .BuildControl {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between;/*keep some distance for each other*/
     align-items: center;
     margin: 5px 0;
 }
 
 .BuildControl button {
-    display: block;
+    display: block;/*normally is inline but here we want block style button*/
     font: inherit;
     padding: 5px;
     margin: 0 5px;
     width: 80px;
     border: 1px solid #AA6817;
-    cursor: pointer;
+    cursor: pointer;/*hand*/
     outline: none;
 }
 
