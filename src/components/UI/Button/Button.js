@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from './Button.css'
-
+//General button for reusability
 const  button = props =>(
     <button
         className={[classes.Button,classes[props.btnType]].join(' ')}
