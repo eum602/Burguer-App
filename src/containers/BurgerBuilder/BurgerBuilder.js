@@ -36,7 +36,7 @@ class BurgerBuilder extends Component {
 
         this.setState({purchasable:sum > 0})
     }
-
+    //Adding and removing ingredients
     addIngredientHandler = (type) =>{
         const oldCount = this.state.ingredients[type]
         const updatedCount = oldCount +1
