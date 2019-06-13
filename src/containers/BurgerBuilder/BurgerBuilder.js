@@ -25,7 +25,8 @@ class BurgerBuilder extends Component {
         purchasing:false
     }
 
-    updatePurchaseState = ingredients =>{
+    updatePurchaseState = ingredients =>{//function to enable or disable purchase Button in 
+                                            //BuildControls component by using map reduce
         //const ingredients = {...this.state.ingredients}
         const sum = Object.keys(ingredients).map(igKey=>{
             return ingredients[igKey]
