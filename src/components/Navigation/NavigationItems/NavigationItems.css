@@ -1,8 +1,19 @@
+.NavigationItems *{/*deleting some margin styles*/
+    padding: 0;
+    margin: 0
+}
 .NavigationItems{
     margin: 0;
     padding: 0;
     list-style: none;
     display: flex;
     align-items: center;
+    flex-flow: column; /*see reference in css notes*/
     height: 100%;
+}
+
+@media(min-width:500px){
+    .NavigationItems{
+        flex-flow: row;
+    }    
 }
