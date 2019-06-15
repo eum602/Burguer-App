@@ -1,7 +1,7 @@
 import classes from './Modal.css'
 import React, {Component} from 'react'
 import Backdrop from '../Backdrop/Backdrop';
-import Aux from '../../../hoc/Aux';
+import Aux from '../../../hoc/Aux/Aux';
 //Modal converted from presentational to stateful component:
 class Modal extends Component {
     shouldComponentUpdate(nextProps,nextState){
