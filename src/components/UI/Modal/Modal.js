@@ -1,22 +1,32 @@
 import classes from './Modal.css'
-import React from 'react'
+import React, {Component} from 'react'
 import Backdrop from '../Backdrop/Backdrop';
 import Aux from '../../../hoc/Aux';
+//Modal converted from presentational to stateful component:
+class Modal extends Component {
+    shouldComponentUpdate(nextProps,nextState){
+        return nextProps.show!==this.props.show //condition to render or not.
+    }
 
-const modal =  props => (//modal UI translates the wrapped components so those are 
-    //displayed from top to bottom when props.show is true
-    <Aux>
-        <Backdrop show={props.show} clicked={props.modalClosed}/>
-        <div 
-        className={classes.Modal}
-        style={{
-            transform: props.show ? 'translateY(0)':'translateY(-100vh)',
-            opacity : props.show ? '1':'0'
-        }}//vh is view port high... is a special unit
-        >       
-            {props.children}
-        </div>
-    </Aux>    
-)
+    componentWillUpdate(){//if updates it runs
+        console.log('[Modal] Will update')
+    }
+    render() {
+        return(
+            <Aux>
+                <Backdrop show={this.props.show} clicked={this.props.modalClosed}/>
+                <div 
+                className={classes.Modal}
+                style={{
+                    transform: this.props.show ? 'translateY(0)':'translateY(-100vh)',
+                    opacity : this.props.show ? '1':'0'
+                }}//vh is view port high... is a special unit
+                >
+                    {this.props.children}
+                </div>
+            </Aux>
+        )
+    }
+}
 
-export default modal 
+export default Modal

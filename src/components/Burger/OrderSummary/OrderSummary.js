@@ -1,8 +1,13 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Aux from '../../../hoc/Aux';
 import Button from '../../UI/Button/Button'
 
 const orderSummary = props =>{
+
+    useEffect(()=>{
+        console.log('[OrderSummary] rendering...')
+    })//useEffect runs only when mounting and unmounting and everytime this component HAS BEEN rendered.
+
     const ingredientSummary = Object.keys(props.ingredients).map(igKey=>{
         return (
             <li key={igKey}>
@@ -29,4 +34,5 @@ const orderSummary = props =>{
         </Aux>
     )
 }
-export default orderSummary
+export default React.memo(orderSummary)//React.memo is the analogous to shouldComponentUpdate
+                                        //but for functional components
