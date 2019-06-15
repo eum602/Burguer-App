@@ -6,16 +6,24 @@ import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
 class Layout extends Component {
     state = {
-        showSideDrawer:true
+        showSideDrawer:false
     }
-    SideDrawerCloseHanlder = () => {
+    sideDrawerCloseHanlder = () => {
         this.setState({showSideDrawer:false})
     }
+
+    sideDrawerToggleHanlder = () => {
+        this.setState(prevState=>{
+            return {showSideDrawer:!prevState.showSideDrawer}
+        })
+    }
+
+
     render(){
         return(
             <Aux>
-                <Toolbar/>
-                <SideDrawer open={this.state.showSideDrawer} closed={this.SideDrawerCloseHanlder} />
+                <Toolbar drawerToggleClicked={this.sideDrawerToggleHanlder}/>
+                <SideDrawer open={this.state.showSideDrawer} closed={this.sideDrawerCloseHanlder} />
                 <main className={classes.Content}> {/* adding margin with respect to its parent; all
                 wrapper and components done in react do not add style in the project; we add style directly in
                 html elements */}
