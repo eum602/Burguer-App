@@ -9,6 +9,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ### `UML DIAGRAM`
 
-`raw.githubusercontent.com/eum602/Burguer-App/server-access/BurgerApp%20-%20UML.jpg?sanitize=true&raw=true`
+![uml-diagram](raw.githubusercontent.com/eum602/Burguer-App/server-access/BurgerApp%20-%20UML.jpg)
 
 
