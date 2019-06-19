@@ -4,6 +4,7 @@ import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-orders' //importing our own custom instance of axios
 
 const INGREDIENTS_PRICES = {
     salad:0.5,
@@ -76,7 +77,26 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () =>{
-        alert('You continue!')
+        //alert('You continue!')
+        const order = {
+            ingredients: this.state.ingredients,
+            price:this.state.totalPrice,
+            customer: {
+                name: "Erick Pacheco",
+                address: {
+                    street:'Punta Negra',
+                    zipCode: "23",
+                    country: "Peru"
+                },
+                email: "eum602@gmail.com"            
+            },
+            deliveryMethod: 'fastest'
+        }
+        axios.post('/orders.json',order) //In firebase as we specify
+        // orders then that enpoint is created automatically;
+        //also using ".json" extension so that we use a non relational db
+        .then(response=>console.log(response))
+        .catch(e=>console.log(e))
     }
 
     render(){
