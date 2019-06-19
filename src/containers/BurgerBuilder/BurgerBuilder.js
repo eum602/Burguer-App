@@ -5,6 +5,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders' //importing our own custom instance of axios
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 const INGREDIENTS_PRICES = {
     salad:0.5,
@@ -23,7 +24,8 @@ class BurgerBuilder extends Component {
         },
         totalPrice:4,
         purchasable:false,
-        purchasing:false
+        purchasing:false,
+        loading:false
     }
 
     updatePurchaseState = ingredients =>{//function to enable or disable purchase Button in 
@@ -78,6 +80,7 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () =>{
         //alert('You continue!')
+        this.setState({loading:true})
         const order = {
             ingredients: this.state.ingredients,
             price:this.state.totalPrice,
@@ -95,8 +98,9 @@ class BurgerBuilder extends Component {
         axios.post('/orders.json',order) //In firebase as we specify
         // orders then that enpoint is created automatically;
         //also using ".json" extension so that we use a non relational db
-        .then(response=>console.log(response))
-        .catch(e=>console.log(e))
+        .then(response=>this.setState({loading:false,purchasing:false}))//purchasing:false to not to show modal anymore
+        //loading to turn off sping by switching to <OrderSummary> =>see orderSummary variable in render
+        .catch(e=>this.setState({loading:false,purchasing:false}))
     }
 
     render(){
@@ -105,18 +109,24 @@ class BurgerBuilder extends Component {
             console.log('key',key)
             disabledInfo[key]= disabledInfo[key]<=0
         }
+
+        let orderSummary = <OrderSummary
+            ingredients={this.state.ingredients}
+            price={this.state.totalPrice}
+            purchaseCancelled={this.purchaseCancelHandler}//props to manage click buttons
+            purchaseContinued={this.purchaseContinueHandler}
+            />
+
+        if(this.state.loading){
+            orderSummary = <Spinner/>
+        }
         return(
             <Aux>                
                 <Modal 
                 show={this.state.purchasing}
                 modalClosed={this.purchaseCancelHandler}
                 >
-                    <OrderSummary 
-                    ingredients={this.state.ingredients}
-                    price={this.state.totalPrice}
-                    purchaseCancelled={this.purchaseCancelHandler}//props to manage click buttons
-                    purchaseContinued={this.purchaseContinueHandler}
-                    />
+                {orderSummary}                    
                 </Modal>
                 <Burger ingredients={this.state.ingredients}/>                
                 <BuildControls
