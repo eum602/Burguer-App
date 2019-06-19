@@ -10,9 +10,7 @@ class Modal extends Component {
         //means if orderSummary has changed to spinner or if it is the orderSummary component
     }
 
-    componentWillUpdate(){//if updates it runs
-        console.log('[Modal] Will update')
-    }
+    
     render() {
         return(
             <Aux>

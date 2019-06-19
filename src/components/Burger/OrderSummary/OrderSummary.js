@@ -4,8 +4,7 @@ import Button from '../../UI/Button/Button'
 
 const orderSummary = props =>{
 
-    useEffect(()=>{
-        console.log('[OrderSummary] rendering...')
+    useEffect(()=>{        
     })//useEffect runs only when mounting and unmounting and everytime this component HAS BEEN rendered.
 
     const ingredientSummary = Object.keys(props.ingredients).map(igKey=>{
