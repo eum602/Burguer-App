@@ -13,18 +13,32 @@ const withErrorHandler = (WrappedComponent,axios) => {
             //component should have rendered after all its childs are rendered so interceptors should have been
             //rendered after errors ocurred. - l-211
             super(props)
-            axios.interceptors.request.use(req=>{
+
+            //storing the request interceptor on the this object
+            this.reqInterceptors = axios.interceptors.request.use(req=>{
                 this.setState({error:null}) //whenever I send a request I clean any error.
                 return req //returning the request so that the request can continue
             })
-            axios.interceptors.response.use(res=>res, error=>{//res=>res means we do not do nothing with
+            //storing the response interceptor on the this object
+            this.resInterceptors = axios.interceptors.response.use(res=>res, error=>{//res=>res means we do not do nothing with
                 //the response and thus we return it to let continue the process in axios
                 this.setState({error})
             })
         }
         state={
             error:null
-        }        
+        }
+
+        componentWillUnmount(){
+            console.log('[componentWillUnmount ... ', this.reqInterceptors, this.resInterceptors)
+            //deleting interceptors otherwise each time this component is created will be attaching more and
+            //more interceptors to the same axios instance, and it would be a problem when multiple instances access this withErrorHandler
+            //component because we could have multiple interceptors in memory which are not dead and it would
+            //cause maybe some problems in state of variables or in the best case they leak to memory 
+            //because those are using memory for code that is not needed anymore
+            axios.interceptors.request.eject(this.reqInterceptors) //eject => delete request interceptor
+            axios.interceptors.response.eject(this.resInterceptors) //eject => delete response interceptor
+        }
 
         errorConfirmedHandler = () => {
             this.setState({error:null})
