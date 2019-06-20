@@ -5,10 +5,14 @@ import Modal from "../../components/UI/Modal/Modal"
 
 const withErrorHandler = (WrappedComponent,axios) => {
     return class extends Component {
-        state={
-            error:null
-        }
-        componentDidMount(){
+        constructor(props){//using constructor instead of componentDidMount so that we can
+            //handle error when childComponents are loaded.It was before in componentDidMount
+            //and was working well because interceptors where hanlding network error that user
+            //made when clicking some button which occurs after ALL is loaded; but by suing this old approach we could
+            //not have handled errors that occurs during loading because componentDidMount in this anonymous
+            //component should have rendered after all its childs are rendered so interceptors should have been
+            //rendered after errors ocurred. - l-211
+            super(props)
             axios.interceptors.request.use(req=>{
                 this.setState({error:null}) //whenever I send a request I clean any error.
                 return req //returning the request so that the request can continue
@@ -18,6 +22,9 @@ const withErrorHandler = (WrappedComponent,axios) => {
                 this.setState({error})
             })
         }
+        state={
+            error:null
+        }        
 
         errorConfirmedHandler = () => {
             this.setState({error:null})
