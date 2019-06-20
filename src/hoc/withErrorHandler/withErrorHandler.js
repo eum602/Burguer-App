@@ -29,8 +29,7 @@ const withErrorHandler = (WrappedComponent,axios) => {
             error:null
         }
 
-        componentWillUnmount(){
-            console.log('[componentWillUnmount ... ', this.reqInterceptors, this.resInterceptors)
+        componentWillUnmount(){            
             //deleting interceptors otherwise each time this component is created will be attaching more and
             //more interceptors to the same axios instance, and it would be a problem when multiple instances access this withErrorHandler
             //component because we could have multiple interceptors in memory which are not dead and it would
