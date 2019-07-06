@@ -102,7 +102,10 @@ class BurgerBuilder extends Component {
         axios.post('/orders.json',order) //In firebase as we specify
         // orders then that enpoint is created automatically;
         //also using ".json" extension so that we use a non relational db
-        .then(response=>this.setState({loading:false,purchasing:false}))//purchasing:false to not to show modal anymore
+        .then(response=>{
+            this.setState({loading:false,purchasing:false})
+            this.props.history.push('/checkout')
+        })//purchasing:false to not to show modal anymore
         //loading to turn off sping by switching to <OrderSummary> =>see orderSummary variable in render
         .catch(e=>this.setState({loading:false,purchasing:false}))
     }
