@@ -84,30 +84,38 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () =>{
         //alert('You continue!')
-        this.setState({loading:true})
-        const order = {
-            ingredients: this.state.ingredients,
-            price:this.state.totalPrice,
-            customer: {
-                name: "Erick Pacheco",
-                address: {
-                    street:'Punta Negra',
-                    zipCode: "23",
-                    country: "Peru"
-                },
-                email: "eum602@gmail.com"            
-            },
-            deliveryMethod: 'fastest'
+        // this.setState({loading:true})
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price:this.state.totalPrice,
+        //     customer: {
+        //         name: "Erick Pacheco",
+        //         address: {
+        //             street:'Punta Negra',
+        //             zipCode: "23",
+        //             country: "Peru"
+        //         },
+        //         email: "eum602@gmail.com"            
+        //     },
+        //     deliveryMethod: 'fastest'
+        // }
+        // axios.post('/orders.json',order) //In firebase as we specify
+        // // orders then that enpoint is created automatically;
+        // //also using ".json" extension so that we use a non relational db
+        // .then(response=>{
+        //     this.setState({loading:false,purchasing:false})            
+        // })//purchasing:false to not to show modal anymore
+        // //loading to turn off sping by switching to <OrderSummary> =>see orderSummary variable in render
+        // .catch(e=>this.setState({loading:false,purchasing:false}))
+        const queryParams = []
+        for(let i in this.state.ingredients){
+            queryParams.push(`${encodeURIComponent(i)}=${encodeURIComponent(this.state.ingredients[i])}`)
         }
-        axios.post('/orders.json',order) //In firebase as we specify
-        // orders then that enpoint is created automatically;
-        //also using ".json" extension so that we use a non relational db
-        .then(response=>{
-            this.setState({loading:false,purchasing:false})
-            this.props.history.push('/checkout')
-        })//purchasing:false to not to show modal anymore
-        //loading to turn off sping by switching to <OrderSummary> =>see orderSummary variable in render
-        .catch(e=>this.setState({loading:false,purchasing:false}))
+        const queryString = queryParams.join('&')
+        this.props.history.push({
+            pathname:"/checkout",
+            search:`?${queryString}`
+        })
     }
 
     render(){
