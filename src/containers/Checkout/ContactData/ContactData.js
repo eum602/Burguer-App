@@ -18,7 +18,8 @@ class ContactData extends Component{
                 validation:{
                     required:true
                 },
-                valid:false
+                valid:false,
+                touched:false
             },
             street:{
                 elementType:'input',
@@ -30,7 +31,8 @@ class ContactData extends Component{
                 validation:{
                     required:true
                 },
-                valid:false
+                valid:false,
+                touched:false
             },
             zipCode: {
                 elementType:'input',
@@ -44,7 +46,8 @@ class ContactData extends Component{
                     minLength:5,
                     maxLength:5
                 },
-                valid:false
+                valid:false,
+                touched:false
             },
             country: {
                 elementType:'input',
@@ -56,7 +59,8 @@ class ContactData extends Component{
                 validation:{
                     required:true
                 },
-                valid:false
+                valid:false,
+                touched:false
             },
             email: {
                 elementType:'input',
@@ -68,7 +72,8 @@ class ContactData extends Component{
                 validation:{
                     required:true
                 },
-                valid:false
+                valid:false,
+                touched:false
             },
             deliveryMethod: {
                 elementType:'select',
@@ -142,6 +147,7 @@ class ContactData extends Component{
         again. We do all of this in order to not to modify the state directly(withouyt this.setState)*/
         updatedFormElement.value = event.target.value
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
+        updatedFormElement.touched = true
         updatedOrderForm[inputIdentifier] = updatedFormElement
         console.log(updatedFormElement)
         this.setState({orderForm:updatedOrderForm})
@@ -163,13 +169,21 @@ class ContactData extends Component{
                         <h4>Enter your Contact Data</h4>
                         <form onSubmit={this.orderHandler}>{/*moving the handler to the form */}
                             {formElementsArray.map(formElement=>{
-                                const {elementType, elementConfig} = formElement.config
+                                const {elementType, elementConfig,value, valid,validation} = formElement.config
                                 return (
                                     <Input
                                         key={formElement.id}
                                         elementType={elementType}
                                         elementConfig={elementConfig}
-                                        value={formElement.value}
+                                        value={value}
+                                        invalid={!valid}/**for checking validity after checkValidity verifies
+                                        the conditions of the filled data in the input */
+                                        shouldValidate = {validation}/**shouldValidate to simply
+                                        check if that input is validable or not(e. select input is not validable
+                                            in our example) */
+                                        touched={formElement.config.touched} /**touched is when Input loaded
+                                        as FALSE so input is not shown in red from the beggining but
+                                        after user enters some values and abandone that input*/
                                         changed={e=>this.inputChangeHandler(e,formElement.id)}
                                     />
                                 )

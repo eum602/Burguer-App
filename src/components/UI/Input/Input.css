@@ -25,3 +25,8 @@
     outline: none;/*getting rid of the border that appears when focusing on the input*/
     background-color: #ccc;
 }
+
+.Invalid{/*for invalid inputs*/
+    border: 1px solid red;
+    background-color: #fda49a
+}
