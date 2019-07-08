@@ -14,7 +14,11 @@ class ContactData extends Component{
                     type:'text',
                     placeholder:'Your Name',
                 },
-                value: 'Erick'
+                value: 'Erick',
+                validation:{
+                    required:true
+                },
+                valid:false
             },
             street:{
                 elementType:'input',
@@ -22,7 +26,11 @@ class ContactData extends Component{
                     type:'text',
                     placeholder:'Street',
                 },
-                value: ''
+                value: '',
+                validation:{
+                    required:true
+                },
+                valid:false
             },
             zipCode: {
                 elementType:'input',
@@ -30,7 +38,13 @@ class ContactData extends Component{
                     type:'text',
                     placeholder:'ZIP CODE',
                 },
-                value: ''
+                value: '',
+                validation:{
+                    required:true,
+                    minLength:5,
+                    maxLength:5
+                },
+                valid:false
             },
             country: {
                 elementType:'input',
@@ -38,7 +52,11 @@ class ContactData extends Component{
                     type:'text',
                     placeholder:'Country',
                 },
-                value: ''
+                value: '',
+                validation:{
+                    required:true
+                },
+                valid:false
             },
             email: {
                 elementType:'input',
@@ -46,7 +64,11 @@ class ContactData extends Component{
                     type:'email',
                     placeholder:'Your E-Mail',
                 },
-                value: ''
+                value: '',
+                validation:{
+                    required:true
+                },
+                valid:false
             },
             deliveryMethod: {
                 elementType:'select',
@@ -62,18 +84,44 @@ class ContactData extends Component{
                         }
                     ]
                 },
-                value: ''
+                value: 'fastest'//adding this initial because otherwise if user do not
+                //select then this default will be sent to the db
             },
         },
         loading:false
     }
 
+    checkValidity = (value,rules) => {
+        //determining the inputs in the form are valid or not
+        let isValid =  true
+        if(rules.required){
+            isValid = value.trim() !=='' && isValid //trim (deleting withespacings at the beginning
+            //or at the end)
+        }
+        //here you can add more rules as you require
+        if(rules.minLength){
+            isValid = value.length >= rules.minLength && isValid
+        }
+
+        if(rules.maxLength){
+            isValid = value.length <=rules.maxLength &&  isValid
+        }
+
+        return isValid
+    }
+
     orderHandler = e =>{
         e.preventDefault()
         this.setState({loading:true})
+        const formData = {}
+        for(let formElementIdentifier in this.state.orderForm){
+            formData[formElementIdentifier]=this.state.orderForm[formElementIdentifier].value
+            //creating key-value pairs (eg. name:'Erick')
+        }
         const order = {
             ingredients: this.props.ingredients,
-            price:this.props.price            
+            price:this.props.price,
+            orderData:formData //passing all data about the user for the database
         }
         axios.post('/orders.json',order) //In firebase as we specify
         // orders then that enpoint is created automatically;
@@ -93,7 +141,9 @@ class ContactData extends Component{
         and NOT A TRUE CLONE so we are taking a true copy of that element by using spread operator 
         again. We do all of this in order to not to modify the state directly(withouyt this.setState)*/
         updatedFormElement.value = event.target.value
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
         updatedOrderForm[inputIdentifier] = updatedFormElement
+        console.log(updatedFormElement)
         this.setState({orderForm:updatedOrderForm})
     }
 
@@ -111,7 +161,7 @@ class ContactData extends Component{
                     <Spinner/>:
                     <Aux>
                         <h4>Enter your Contact Data</h4>
-                        <form>                            
+                        <form onSubmit={this.orderHandler}>{/*moving the handler to the form */}
                             {formElementsArray.map(formElement=>{
                                 const {elementType, elementConfig} = formElement.config
                                 return (
@@ -124,7 +174,7 @@ class ContactData extends Component{
                                     />
                                 )
                             })}
-                            <Button clicked= {this.orderHandler} btnType="Success">ORDER</Button>
+                            <Button btnType="Success">ORDER</Button>
                         </form>
                     </Aux>}
             </div>
