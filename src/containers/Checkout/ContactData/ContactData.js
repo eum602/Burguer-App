@@ -7,11 +7,63 @@ import Aux from '../../../hoc/Aux/Aux';
 import Input from '../../../components/UI/Input/Input'
 class ContactData extends Component{
     state={
-        name:'',
-        email:'',
-        address:{
-            street:'',
-            postalCode:''
+        orderForm:{
+            name: {
+                elementType:'input',
+                elementConfig:{
+                    type:'text',
+                    placeholder:'Your Name',
+                },
+                value: 'Erick'
+            },
+            street:{
+                elementType:'input',
+                elementConfig:{
+                    type:'text',
+                    placeholder:'Street',
+                },
+                value: ''
+            },
+            zipCode: {
+                elementType:'input',
+                elementConfig:{
+                    type:'text',
+                    placeholder:'ZIP CODE',
+                },
+                value: ''
+            },
+            country: {
+                elementType:'input',
+                elementConfig:{
+                    type:'text',
+                    placeholder:'Country',
+                },
+                value: ''
+            },
+            email: {
+                elementType:'input',
+                elementConfig:{
+                    type:'email',
+                    placeholder:'Your E-Mail',
+                },
+                value: ''
+            },
+            deliveryMethod: {
+                elementType:'select',
+                elementConfig:{
+                    options:[
+                        {//options only examples; in this case for my elivery method setup
+                            value:'fastest',
+                            displayValue:'Fastest'
+                        },
+                        {
+                            value:'cheapest',
+                            displayValue:'Cheapest'
+                        }
+                    ]
+                },
+                value: ''
+            },
         },
         loading:false
     }
@@ -21,17 +73,7 @@ class ContactData extends Component{
         this.setState({loading:true})
         const order = {
             ingredients: this.props.ingredients,
-            price:this.props.price,
-            customer: {
-                name: "Erick Pacheco",
-                address: {
-                    street:'Punta Negra',
-                    zipCode: "23",
-                    country: "Peru"
-                },
-                email: "eum602@gmail.com"            
-            },
-            deliveryMethod: 'fastest'
+            price:this.props.price            
         }
         axios.post('/orders.json',order) //In firebase as we specify
         // orders then that enpoint is created automatically;
@@ -43,20 +85,45 @@ class ContactData extends Component{
         //loading to turn off sping by switching to <OrderSummary> =>see orderSummary variable in render
         .catch(e=>this.setState({loading:false}))
     }
+
+    inputChangeHandler=(event,inputIdentifier)=>{
+        const updatedOrderForm = {...this.state.orderForm} //making a true clone of orderForm
+        const updatedFormElement =  {...updatedOrderForm[inputIdentifier]} /*as each element if the 
+        orderForm is an object then each element on the cloned updatedFormElemet will be a POINTER
+        and NOT A TRUE CLONE so we are taking a true copy of that element by using spread operator 
+        again. We do all of this in order to not to modify the state directly(withouyt this.setState)*/
+        updatedFormElement.value = event.target.value
+        updatedOrderForm[inputIdentifier] = updatedFormElement
+        this.setState({orderForm:updatedOrderForm})
+    }
+
     render(){
-        return(            
+        const formElementsArray = []
+        for(let key in this.state.orderForm){
+            formElementsArray.push({
+                id:key,
+                config:this.state.orderForm[key]
+            })
+        }
+        return(
             <div className={classes.ContactData}>
                 {this.state.loading?
                     <Spinner/>:
                     <Aux>
                         <h4>Enter your Contact Data</h4>
-                        <form>
-                            <Input inputtype="input" type="text" name="name" placeholder="Your Name"></Input> {/**
-                            sending all props like text, name and placeholder automatically because of {...props}
-                            in Input component */}
-                            <Input inputtype="input" type="text" name="email" placeholder="Your Mail"></Input>
-                            <Input inputtype="input" type="text" name="street" placeholder="Street"></Input>
-                            <Input inputtype="input" type="text" name="postal" placeholder="Postal Code"></Input>
+                        <form>                            
+                            {formElementsArray.map(formElement=>{
+                                const {elementType, elementConfig} = formElement.config
+                                return (
+                                    <Input
+                                        key={formElement.id}
+                                        elementType={elementType}
+                                        elementConfig={elementConfig}
+                                        value={formElement.value}
+                                        changed={e=>this.inputChangeHandler(e,formElement.id)}
+                                    />
+                                )
+                            })}
                             <Button clicked= {this.orderHandler} btnType="Success">ORDER</Button>
                         </form>
                     </Aux>}
