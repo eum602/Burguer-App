@@ -4,6 +4,7 @@ import classes from './ContactData.css'
 import axios from '../../../axios-orders'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Aux from '../../../hoc/Aux/Aux';
+import Input from '../../../components/UI/Input/Input'
 class ContactData extends Component{
     state={
         name:'',
@@ -50,10 +51,12 @@ class ContactData extends Component{
                     <Aux>
                         <h4>Enter your Contact Data</h4>
                         <form>
-                            <input className={classes.Input} type="text" name="name" placeholder="Your Name"></input>
-                            <input className={classes.Input} type="text" name="email" placeholder="Your Mail"></input>
-                            <input className={classes.Input} type="text" name="street" placeholder="Street"></input>
-                            <input className={classes.Input} type="text" name="postal" placeholder="Postal Code"></input>
+                            <Input inputtype="input" type="text" name="name" placeholder="Your Name"></Input> {/**
+                            sending all props like text, name and placeholder automatically because of {...props}
+                            in Input component */}
+                            <Input inputtype="input" type="text" name="email" placeholder="Your Mail"></Input>
+                            <Input inputtype="input" type="text" name="street" placeholder="Street"></Input>
+                            <Input inputtype="input" type="text" name="postal" placeholder="Postal Code"></Input>
                             <Button clicked= {this.orderHandler} btnType="Success">ORDER</Button>
                         </form>
                     </Aux>}
