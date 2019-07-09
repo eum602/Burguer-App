@@ -14,7 +14,7 @@ class ContactData extends Component{
                     type:'text',
                     placeholder:'Your Name',
                 },
-                value: 'Erick',
+                value: '',
                 validation:{
                     required:true
                 },
@@ -96,6 +96,7 @@ class ContactData extends Component{
                 },
                 value: 'fastest',//adding this initial because otherwise if user do not
                 //select then this default will be sent to the db
+                validation:{},
                 valid:true
             },
         },
@@ -158,9 +159,9 @@ class ContactData extends Component{
         updatedOrderForm[inputIdentifier] = updatedFormElement
         let formIsValid = true
         for(let inputIdentifier in updatedOrderForm){
-            formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid
+            formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid            
         }
-        this.setState({orderForm:updatedOrderForm, formIsValid})
+        this.setState({orderForm:updatedOrderForm, formIsValid:formIsValid})
     }
 
     render(){
