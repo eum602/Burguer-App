@@ -209,3 +209,12 @@ class ContactData extends Component{
 }
 
 export default ContactData
+
+/**Resources for validation * 
+Validate.js (you may import its functionality into your React projects): https://validatejs.org/
+Get more ideas about potential validation approaches: https://react.rocks/tag/Validation
+
+Other alternatives
+react-validation package: https://www.npmjs.com/package/react-validation
+formsy-react package: https://github.com/christianalfoni/formsy-react
+ */
