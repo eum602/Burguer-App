@@ -3,8 +3,10 @@ import classes from './Input.css'
 const input = props => {
     let inputElement=null
     const inputClasses =  [classes.InputElement]
-
-
+    let validationError = null;
+    if (props.invalid && props.touched) {
+        validationError = <p className={classes.ValidationError}>Please enter a valid {props.valueType}!</p>;
+    }
     if(props.invalid && props.shouldValidate && props.touched){/**these props
         has been expalined in ContactData parent component - all of this is for conditional styling
         not only during the filling process of this input but also at the beggining so that 
@@ -59,12 +61,13 @@ const input = props => {
                 onChange={props.changed}
                 />
     }
+
     return(
         <div 
-            className={classes.Input}>
-     
+            className={classes.Input}>                     
            <label className={classes.Label}>{props.label}</label>
             {inputElement}
+            {validationError}
         </div>
     )
 }

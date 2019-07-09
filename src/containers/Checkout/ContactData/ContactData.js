@@ -19,7 +19,8 @@ class ContactData extends Component{
                     required:true
                 },
                 valid:false,
-                touched:false
+                touched:false,
+                valueType:'name'
             },
             street:{
                 elementType:'input',
@@ -32,7 +33,8 @@ class ContactData extends Component{
                     required:true
                 },
                 valid:false,
-                touched:false
+                touched:false,
+                valueType:'Street Name'
             },
             zipCode: {
                 elementType:'input',
@@ -47,7 +49,8 @@ class ContactData extends Component{
                     maxLength:5
                 },
                 valid:false,
-                touched:false
+                touched:false,
+                valueType:'ZipCode'
             },
             country: {
                 elementType:'input',
@@ -60,7 +63,8 @@ class ContactData extends Component{
                     required:true
                 },
                 valid:false,
-                touched:false
+                touched:false,
+                valueType:'Country name'
             },
             email: {
                 elementType:'input',
@@ -73,7 +77,8 @@ class ContactData extends Component{
                     required:true
                 },
                 valid:false,
-                touched:false
+                touched:false,
+                valueType:'email'
             },
             deliveryMethod: {
                 elementType:'select',
@@ -89,10 +94,12 @@ class ContactData extends Component{
                         }
                     ]
                 },
-                value: 'fastest'//adding this initial because otherwise if user do not
+                value: 'fastest',//adding this initial because otherwise if user do not
                 //select then this default will be sent to the db
+                valid:true
             },
         },
+        formIsValid: false,
         loading:false
     }
 
@@ -149,8 +156,11 @@ class ContactData extends Component{
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
         updatedFormElement.touched = true
         updatedOrderForm[inputIdentifier] = updatedFormElement
-        console.log(updatedFormElement)
-        this.setState({orderForm:updatedOrderForm})
+        let formIsValid = true
+        for(let inputIdentifier in updatedOrderForm){
+            formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid
+        }
+        this.setState({orderForm:updatedOrderForm, formIsValid})
     }
 
     render(){
@@ -169,7 +179,7 @@ class ContactData extends Component{
                         <h4>Enter your Contact Data</h4>
                         <form onSubmit={this.orderHandler}>{/*moving the handler to the form */}
                             {formElementsArray.map(formElement=>{
-                                const {elementType, elementConfig,value, valid,validation} = formElement.config
+                                const {elementType, elementConfig,value, valid,validation,valueType} = formElement.config
                                 return (
                                     <Input
                                         key={formElement.id}
@@ -184,11 +194,12 @@ class ContactData extends Component{
                                         touched={formElement.config.touched} /**touched is when Input loaded
                                         as FALSE so input is not shown in red from the beggining but
                                         after user enters some values and abandone that input*/
+                                        valueType={valueType}
                                         changed={e=>this.inputChangeHandler(e,formElement.id)}
                                     />
                                 )
                             })}
-                            <Button btnType="Success">ORDER</Button>
+                            <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
                         </form>
                     </Aux>}
             </div>
